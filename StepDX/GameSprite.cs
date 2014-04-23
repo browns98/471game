@@ -14,9 +14,6 @@ namespace StepDX
         private Vector2 v = new Vector2(0, 0);  // Velocity
         private Vector2 a = new Vector2(0, 0);  // Acceleration
 
-        private float spriteTime = 0;
-        private float spriteRate = 6;   // 6 per second
-
         public Vector2 P { set { p = value; } get { return p; } }
         public Vector2 V { set { v = value; } get { return v; } }
         public Vector2 A { set { a = value; } get { return a; } }
@@ -50,44 +47,7 @@ namespace StepDX
             v.Y += a.Y * dt;
             p.X += v.X * dt;
             p.Y += v.Y * dt;
-
-            int spriteNum;
-
-            if (v.X == 0)
-            {
-                spriteNum = 5;
-                spriteTime = 0;
-            }
-            else
-            {
-                spriteTime += dt;
-                spriteNum = (int)(spriteTime * spriteRate) % 4;     // 4 images
-            }
-
-            if (v.Y != 0)
-            {
-                spriteNum = 7;
-            }
-
-            // Create the texture vertices
-            textureC.Clear();
-            if (v.X >= 0)
-            {
-                textureC.Add(new Vector2(spriteNum * 0.125f, 1));
-                textureC.Add(new Vector2(spriteNum * 0.125f, 0));
-                textureC.Add(new Vector2((spriteNum + 1) * 0.125f, 0));
-                textureC.Add(new Vector2((spriteNum + 1) * 0.125f, 1));
-            }
-            else
-            {
-                // If moving in the negative direction, we draw our sprite 
-                // as a mirror image.
-                textureC.Add(new Vector2((spriteNum + 1) * 0.125f, 1));
-                textureC.Add(new Vector2((spriteNum + 1) * 0.125f, 0));
-                textureC.Add(new Vector2(spriteNum * 0.125f, 0));
-                textureC.Add(new Vector2(spriteNum * 0.125f, 1));
-            }
-
+            
             // Move the vertices
             verticesM.Clear();
             foreach (Vector2 x in verticesB)

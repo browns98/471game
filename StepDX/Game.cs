@@ -166,16 +166,30 @@ namespace StepDX
             lastTime = stopwatch.ElapsedMilliseconds;
 
             //TODO: Redo this so it uses the new player texture and shape
-            Texture spritetexture = TextureLoader.FromFile(device, "../../guy8.bmp");
+            Texture spritetexture = TextureLoader.FromFile(device, "../../ship.bmp");
             player.Tex = spritetexture;
-            player.AddVertex(new Vector2(-0.2f, 0));
-            player.AddTex(new Vector2(0, 1));
-            player.AddVertex(new Vector2(-0.2f, 1));
-            player.AddTex(new Vector2(0, 0));
-            player.AddVertex(new Vector2(0.2f, 1));
-            player.AddTex(new Vector2(0.125f, 0));
-            player.AddVertex(new Vector2(0.2f, 0));
-            player.AddTex(new Vector2(0.125f, 1));
+
+            float L = 0.225f;
+            float Y = 0.05f;
+
+            player.AddVertex(new Vector2(-L, L));
+            player.AddTex(new Vector2(Y, 0));
+
+            player.AddVertex(new Vector2(0, L));
+            player.AddTex(new Vector2(0.5f, 0));
+
+            player.AddVertex(new Vector2(L, 0.005f));
+            player.AddTex(new Vector2(1.0f-Y, 0.5f-0.005f));
+
+            player.AddVertex(new Vector2(L, -0.005f));
+            player.AddTex(new Vector2(1.0f-Y, 0.5f+0.005f));
+
+            player.AddVertex(new Vector2(0, -L));
+            player.AddTex(new Vector2(0.5f, 1));
+
+            player.AddVertex(new Vector2(-L, -L));
+            player.AddTex(new Vector2(Y, 1));
+
             player.Color = Color.Transparent;
             player.Transparent = true;
             player.P = new Vector2(0.5f, 1);

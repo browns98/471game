@@ -24,7 +24,7 @@ namespace StepDX
             SoundDevice.SetCooperativeLevel(form, CooperativeLevel.Priority);
 
             Load(ref shoot, "../../shoot.wav");
-            Load(ref soundtrack, "../../Frunk.wav");
+            Load(ref soundtrack, "../../shoot.wav");
 
             for (int i = 0; i < clank.Length; i++)
                 Load(ref clank[i], "../../explosion.wav");

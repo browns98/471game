@@ -30,13 +30,13 @@
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 462);
-            this.Name = "Form1";
-            this.Text = "Step Game";
+            this.Name = "Game";
+            this.Text = "CSE 471 Project 3";
             this.ResumeLayout(false);
 
         }
