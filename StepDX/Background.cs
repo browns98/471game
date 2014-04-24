@@ -30,7 +30,7 @@ namespace StepDX
             this.device = device;
 
             // Load the background texture image
-            backgroundT = TextureLoader.FromFile(device, "../../mars.bmp");
+            backgroundT = TextureLoader.FromFile(device, "../../stars.bmp");
 
             // Create a vertex buffer for the background image we will draw
             backgroundV = new VertexBuffer(typeof(CustomVertex.PositionColoredTextured), // Type

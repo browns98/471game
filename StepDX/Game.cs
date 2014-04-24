@@ -26,7 +26,7 @@ namespace StepDX
         /// <summary>
         /// Width of our playing area (meters)
         /// </summary>
-        private float playingW = 32;
+        private float playingW = 7.2f;
 
         /// <summary>
         /// Vertex buffer for our drawing
@@ -42,6 +42,11 @@ namespace StepDX
         /// All of the polygons that make up our world
         /// </summary>
         List<Polygon> world = new List<Polygon>();
+
+        /// <summary>
+        /// All of the lasers in play
+        /// </summary>
+        List<Polygon> lasers = new List<Polygon>();
 
         /// <summary>
         /// Our player sprite
@@ -62,6 +67,8 @@ namespace StepDX
         /// What the last time reading was
         /// </summary>
         private long lastTime;
+
+        private long lastShot;
 
         /// <summary>
         /// A stopwatch to use to keep track of time
@@ -120,10 +127,12 @@ namespace StepDX
                 v.Y = -2.5f;
                 player.V = v;
             }
-            else if (e.KeyCode == Keys.Space)
+            else if (e.KeyCode == Keys.Space && stopwatch.ElapsedMilliseconds > lastShot + 400)
             {
                 //TODO: Make the player shoot
+                AddLaser(player.P);
                 sounds.Shoot();
+                lastShot = stopwatch.ElapsedMilliseconds;
             }
 
         }
@@ -158,14 +167,13 @@ namespace StepDX
                                         CustomVertex.PositionColored.Format,
                                         Pool.Managed);
 
-            background = new Background(device, playingW, playingH);
+            background = new Background(device, playingW+2, playingH);
             sounds = new GameSounds(this);
 
             // Determine the last time
             stopwatch.Start();
             lastTime = stopwatch.ElapsedMilliseconds;
 
-            //TODO: Redo this so it uses the new player texture and shape
             Texture spritetexture = TextureLoader.FromFile(device, "../../ship.bmp");
             player.Tex = spritetexture;
 
@@ -192,7 +200,7 @@ namespace StepDX
 
             player.Color = Color.Transparent;
             player.Transparent = true;
-            player.P = new Vector2(0.5f, 1);
+            player.P = new Vector2(2f, 2);
         }
 
 
@@ -217,10 +225,10 @@ namespace StepDX
             float widP = playingH * aspect;         // Total width of window
             
             float winCenter = player.P.X;
-            if (winCenter - widP / 2 < 0)
+            //if (winCenter - widP / 2 < 0)
                 winCenter = widP / 2;
-            else if (winCenter + widP / 2 > playingW)
-                winCenter = playingW - widP / 2;
+            //else if (winCenter + widP / 2 > playingW)
+                //winCenter = playingW - widP / 2;
 
             device.Transform.Projection = Matrix.OrthoOffCenterLH(winCenter - widP / 2,
                                                                   winCenter + widP / 2,
@@ -232,7 +240,7 @@ namespace StepDX
             // Render the background
             background.Render();
 
-            foreach (Polygon p in world)
+            foreach (Polygon p in lasers)
             {
                 p.Render(device);
             }
@@ -263,10 +271,10 @@ namespace StepDX
                 q.X = 0;
                 r.X = 0.1f;
             }
-            else if (player.P.X > 31.6f)
+            else if (player.P.X > playingW - 0.25f)
             {
                 q.X = 0;
-                r.X = 31.6f;
+                r.X = playingW-0.25f;
             }
             if (player.P.Y < 0.1f)
             {
@@ -297,7 +305,7 @@ namespace StepDX
 
                 player.Advance(step);
 
-                foreach (Polygon p in world)
+                foreach (Polygon p in lasers)
                     p.Advance(step);
 
                 foreach (Polygon p in world)
@@ -316,20 +324,59 @@ namespace StepDX
                         player.Advance(0);
                     }
                 }
+
+                //List<Polygon> newlasers = new List<Polygon>();
+
+                //foreach (Polygon f in lasers)
+                //{
+                //    foreach (Polygon p in world)
+                //    {
+                //        if (collision.Test(f, p))
+                //        {
+                //            // Score a collision with p
+                //            // and we won't need this fireball anymore.
+                //        }
+                //        else
+                //        {
+                //            // We still need this fireball, save it to the new list
+                //            newlasers.Add(f);
+                //        }
+                //    }
+                //}
+
+                //lasers = newlasers;
                 
                 delta -= step;
             }
         }
 
-        public void AddObstacle(float left, float right, float bottom, float top, Color clr)
+        public void AddLaser(Vector2 p)
         {
-            Polygon obs = new Polygon();
+            float left = 0;
+            float right = 0.1f;
+            float top = 0.1f;
+            float bottom = 0;
+            GameSprite obs = new GameSprite();
+
+            Texture lasertexture = TextureLoader.FromFile(device, "../../redLaser.bmp");
+            obs.Tex = lasertexture;
+
             obs.AddVertex(new Vector2(left, top));
+            obs.AddTex(new Vector2(0, 0));
             obs.AddVertex(new Vector2(right, top));
+            obs.AddTex(new Vector2(1, 0));
             obs.AddVertex(new Vector2(right, bottom));
+            obs.AddTex(new Vector2(1, 1));
             obs.AddVertex(new Vector2(left, bottom));
-            obs.Color = clr;
-            world.Add(obs);
+            obs.AddTex(new Vector2(0, 1));
+            obs.Color = Color.Transparent;
+            obs.Transparent = true;
+            Vector2 q = p;
+            q.Y -= 0.05f;
+            q.X += 0.25f;
+            obs.P = q;
+            obs.V = new Vector2(3, 0);
+            lasers.Add(obs);
         }
     }
 }
