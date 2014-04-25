@@ -39,9 +39,9 @@ namespace StepDX
         private Background background = null;
 
         /// <summary>
-        /// All of the polygons that make up our world
+        /// All of the enemies in the game
         /// </summary>
-        List<Polygon> world = new List<Polygon>();
+        List<Polygon> enemies = new List<Polygon>();
 
         /// <summary>
         /// All of the lasers in play
@@ -201,6 +201,11 @@ namespace StepDX
             player.Color = Color.Transparent;
             player.Transparent = true;
             player.P = new Vector2(2f, 2);
+
+
+            AddEnemy(new Vector2(6,2), 4);
+            AddEnemy(new Vector2(8, 2), 4);
+            AddEnemy(new Vector2(10, 2), 4);
         }
 
 
@@ -244,6 +249,9 @@ namespace StepDX
             {
                 p.Render(device);
             }
+
+            foreach (Polygon p in enemies)
+                p.Render(device);
 
             player.Render(device);
 
@@ -308,7 +316,10 @@ namespace StepDX
                 foreach (Polygon p in lasers)
                     p.Advance(step);
 
-                foreach (Polygon p in world)
+                foreach (Polygon p in enemies)
+                    p.Advance(step);
+
+                foreach (Polygon p in enemies)
                 {
                     if (collision.Test(player, p))
                     {
@@ -325,26 +336,40 @@ namespace StepDX
                     }
                 }
 
-                //List<Polygon> newlasers = new List<Polygon>();
+                List<Polygon> newlasers = new List<Polygon>();
+                List<Polygon> tempenemies = enemies;
+                bool hit = false;
 
-                //foreach (Polygon f in lasers)
-                //{
-                //    foreach (Polygon p in world)
-                //    {
-                //        if (collision.Test(f, p))
-                //        {
-                //            // Score a collision with p
-                //            // and we won't need this fireball anymore.
-                //        }
-                //        else
-                //        {
-                //            // We still need this fireball, save it to the new list
-                //            newlasers.Add(f);
-                //        }
-                //    }
-                //}
+                foreach (Polygon f in lasers)
+                {
+                    List<Polygon> newenemies = new List<Polygon>();
+                    hit = false;
+                    if (tempenemies.Count() > 0)
+                    {
+                        foreach (Polygon p in tempenemies)
+                        {
+                            if (collision.Test(f, p))
+                            {
+                                // Score a collision with p
+                                // and we won't need this laser anymore.
+                                hit = true;
+                                sounds.Explosion();
+                            }
+                            else
+                            {
+                                // Otherwise, we still need the enemy
+                                newenemies.Add(p);
+                            }
+                        }
+                    }
+                    if (!hit)
+                        newlasers.Add(f);
+                    tempenemies = newenemies;
+                }
 
-                //lasers = newlasers;
+                lasers = newlasers;
+                enemies = tempenemies;
+
                 
                 delta -= step;
             }
@@ -377,6 +402,79 @@ namespace StepDX
             obs.P = q;
             obs.V = new Vector2(3, 0);
             lasers.Add(obs);
+        }
+
+        public void AddEnemy(Vector2 p, int type)
+        {
+            GameSprite enemy = new GameSprite();
+
+            Texture enemytexture;
+            switch (type)
+            {
+                case 2:
+                    enemy.AddVertex(new Vector2(-0.2f, 0.09f));
+                    enemy.AddVertex(new Vector2(-0.065f, 0.15f));
+                    enemy.AddVertex(new Vector2(0.065f, 0.15f));
+                    enemy.AddVertex(new Vector2(0.2f, 0.09f));
+                    enemy.AddVertex(new Vector2(0.2f, -0.15f));
+                    enemy.AddVertex(new Vector2(-0.2f, -0.15f));
+                    enemytexture = TextureLoader.FromFile(device, "../../enemy2.bmp");
+                    enemy.Tex = enemytexture;
+                    enemy.AddTex(new Vector2(0, 0.2f));
+                    enemy.AddTex(new Vector2(0.32f, 0.1f));
+                    enemy.AddTex(new Vector2(0.64f, 0.1f));
+                    enemy.AddTex(new Vector2(1, 0.2f));
+                    enemy.AddTex(new Vector2(1, 1));
+                    enemy.AddTex(new Vector2(0, 1));
+                    break;
+                case 3:
+                    enemy.AddVertex(new Vector2(-0.2f, 0.07f));
+                    enemy.AddVertex(new Vector2(-0.07f, 0.2f));
+                    enemy.AddVertex(new Vector2(0.07f, 0.2f));
+                    enemy.AddVertex(new Vector2(0.2f, 0.07f));
+                    enemy.AddVertex(new Vector2(0.2f, -0.2f));
+                    enemy.AddVertex(new Vector2(-0.2f, -0.2f));
+                    enemytexture = TextureLoader.FromFile(device, "../../enemy3.bmp");
+                    enemy.Tex = enemytexture;
+                    enemy.AddTex(new Vector2(0, 0.36f));
+                    enemy.AddTex(new Vector2(0.36f, 0.06f));
+                    enemy.AddTex(new Vector2(0.64f, 0.06f));
+                    enemy.AddTex(new Vector2(1, 0.36f));
+                    enemy.AddTex(new Vector2(1, 1));
+                    enemy.AddTex(new Vector2(0, 1));
+                    break;
+                case 4:
+                    enemy.AddVertex(new Vector2(-0.2f, 0));
+                    enemy.AddVertex(new Vector2(-0.05f, 0.15f));
+                    enemy.AddVertex(new Vector2(0.05f, 0.15f));
+                    enemy.AddVertex(new Vector2(0.2f, 0));
+                    enemy.AddVertex(new Vector2(0.15f, -0.05f));
+                    enemy.AddVertex(new Vector2(-0.15f, -0.05f));
+                    enemytexture = TextureLoader.FromFile(device, "../../enemy4.bmp");
+                    enemy.Tex = enemytexture;
+                    enemy.AddTex(new Vector2(0, 0.55f));
+                    enemy.AddTex(new Vector2(0.32f, 0.14f));
+                    enemy.AddTex(new Vector2(0.68f, 0.14f));
+                    enemy.AddTex(new Vector2(1, 0.55f));
+                    enemy.AddTex(new Vector2(1, 0.8f));
+                    enemy.AddTex(new Vector2(0, 0.8f));
+                    break;
+                default:
+                    enemy.AddVertex(new Vector2(-0.2f, 0));
+                    enemy.AddVertex(new Vector2(-0.05f, 0.15f));
+                    enemy.AddVertex(new Vector2(0.05f, 0.15f));
+                    enemy.AddVertex(new Vector2(0.2f, 0));
+                    enemy.AddVertex(new Vector2(0.15f, -0.05f));
+                    enemy.AddVertex(new Vector2(-0.15f, -0.05f));
+                    enemytexture = TextureLoader.FromFile(device, "../../enemy1.bmp");
+                    break;
+            }
+
+            enemy.Color = Color.Transparent;
+            enemy.Transparent = true;
+            enemy.P = p;
+            enemy.V = new Vector2(-1.5f, 0);
+            enemies.Add(enemy);
         }
     }
 }

@@ -12,9 +12,7 @@ namespace StepDX
     {
         private Device SoundDevice = null;
 
-        private SecondaryBuffer[] clank = new SecondaryBuffer[10];
-        int clankToUse = 0;
-
+        private SecondaryBuffer explosion = null;
         private SecondaryBuffer shoot = null;
         private SecondaryBuffer soundtrack = null;
 
@@ -26,8 +24,7 @@ namespace StepDX
             Load(ref shoot, "../../shoot.wav");
             Load(ref soundtrack, "../../shoot.wav");
 
-            for (int i = 0; i < clank.Length; i++)
-                Load(ref clank[i], "../../explosion.wav");
+            Load(ref explosion, "../../explosion.wav");
         }
 
         private void Load(ref SecondaryBuffer buffer, string filename)
@@ -44,15 +41,13 @@ namespace StepDX
             }
         }
 
-        public void Clank()
+        public void Explosion()
         {
-            clankToUse = (clankToUse + 1) % clank.Length;
-
-            if (clank[clankToUse] == null)
+            if (explosion == null)
                 return;
 
-            if (!clank[clankToUse].Status.Playing)
-                clank[clankToUse].Play(0, BufferPlayFlags.Default);
+            explosion.SetCurrentPosition(0);
+            explosion.Play(0, BufferPlayFlags.Default);
         }
 
         public void Shoot()
