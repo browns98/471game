@@ -202,10 +202,10 @@ namespace StepDX
             player.Transparent = true;
             player.P = new Vector2(2f, 2);
 
-
-            AddEnemy(new Vector2(6,2), 4);
-            AddEnemy(new Vector2(8, 2), 4);
-            AddEnemy(new Vector2(10, 2), 4);
+            AddEnemy(new Vector2(6, 2), 1);
+            AddEnemy(new Vector2(8, 2), 2);
+            AddEnemy(new Vector2(10, 2), 3);
+            AddEnemy(new Vector2(12, 2), 4);
         }
 
 
@@ -460,20 +460,27 @@ namespace StepDX
                     enemy.AddTex(new Vector2(0, 0.8f));
                     break;
                 default:
-                    enemy.AddVertex(new Vector2(-0.2f, 0));
-                    enemy.AddVertex(new Vector2(-0.05f, 0.15f));
-                    enemy.AddVertex(new Vector2(0.05f, 0.15f));
+                    enemy.AddVertex(new Vector2(-0.2f, 0.15f));
+                    enemy.AddVertex(new Vector2(0.2f, 0.15f));
                     enemy.AddVertex(new Vector2(0.2f, 0));
-                    enemy.AddVertex(new Vector2(0.15f, -0.05f));
-                    enemy.AddVertex(new Vector2(-0.15f, -0.05f));
+                    enemy.AddVertex(new Vector2(0.15f, -0.15f));
+                    enemy.AddVertex(new Vector2(-0.15f, -0.15f));
+                    enemy.AddVertex(new Vector2(-0.2f, 0));
                     enemytexture = TextureLoader.FromFile(device, "../../enemy1.bmp");
+                    enemy.Tex = enemytexture;
+                    enemy.AddTex(new Vector2(0, 0));
+                    enemy.AddTex(new Vector2(1, 0));
+                    enemy.AddTex(new Vector2(1, 0.5f));
+                    enemy.AddTex(new Vector2(0.86f, 0.93f));
+                    enemy.AddTex(new Vector2(0.14f, 0.93f));
+                    enemy.AddTex(new Vector2(0, 0.5f));
                     break;
             }
 
             enemy.Color = Color.Transparent;
             enemy.Transparent = true;
             enemy.P = p;
-            enemy.V = new Vector2(-1.5f, 0);
+            //enemy.V = new Vector2(-1.5f, 0);
             enemies.Add(enemy);
         }
     }
