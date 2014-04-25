@@ -16,3 +16,12 @@ E:\Documents\Visual Studio 2010\Projects\Project3\StepDX\obj\x86\Debug\Project3.
 E:\Documents\Visual Studio 2010\Projects\Project3\StepDX\obj\x86\Debug\StepDX.Game.resources
 E:\Documents\Visual Studio 2010\Projects\Project3\StepDX\obj\x86\Debug\StepDX.Properties.Resources.resources
 E:\Documents\Visual Studio 2010\Projects\Project3\StepDX\obj\x86\Debug\Project3.csproj.GenerateResource.Cache
+C:\Users\Stephanie\471game\StepDX\bin\Debug\StepDX.exe.config
+C:\Users\Stephanie\471game\StepDX\obj\x86\Debug\StepDX.pdb
+C:\Users\Stephanie\471game\StepDX\bin\Debug\StepDX.exe
+C:\Users\Stephanie\471game\StepDX\bin\Debug\StepDX.pdb
+C:\Users\Stephanie\471game\StepDX\obj\x86\Debug\Project3.csprojResolveAssemblyReference.cache
+C:\Users\Stephanie\471game\StepDX\obj\x86\Debug\StepDX.Game.resources
+C:\Users\Stephanie\471game\StepDX\obj\x86\Debug\StepDX.Properties.Resources.resources
+C:\Users\Stephanie\471game\StepDX\obj\x86\Debug\Project3.csproj.GenerateResource.Cache
+C:\Users\Stephanie\471game\StepDX\obj\x86\Debug\StepDX.exe

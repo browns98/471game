@@ -74,6 +74,12 @@ namespace StepDX
         /// A stopwatch to use to keep track of time
         /// </summary>
         private System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+
+        /// <summary>
+        /// Font variable to display score
+        /// </summary>
+        private Microsoft.DirectX.Direct3D.Font font;
+        int score = 0;
         
         /// <summary>
         /// Initialize the Direct3D device for rendering
@@ -206,6 +212,19 @@ namespace StepDX
             AddEnemy(new Vector2(8, 2), 2);
             AddEnemy(new Vector2(10, 2), 3);
             AddEnemy(new Vector2(12, 2), 4);
+
+            //setting up the font
+            font = new Microsoft.DirectX.Direct3D.Font(device,  // Device we are drawing on
+                20,         // Font height in pixels
+                0,          // Font width in pixels or zero to match height
+                FontWeight.Bold,    // Font weight (Normal, Bold, etc.)
+                0,          // mip levels (0 for default)
+                false,      // italics?
+                CharacterSet.Default,   // Character set to use
+                Precision.Default,      // The font precision, try some of them...
+                FontQuality.Default,    // Quality?
+                PitchAndFamily.FamilyDoNotCare,     // Pitch and family, we don't care
+                "Terminal");               // And the name of the font
         }
 
 
@@ -244,6 +263,12 @@ namespace StepDX
 
             // Render the background
             background.Render();
+
+            //score display
+            font.DrawText(null,     // Because I say so
+                        "Score: " + score,  // Text to draw
+                        new Point(25, 15),  // Location on the display (pixels with 0,0 as upper left)
+                        Color.LightCyan);   // Font color
 
             foreach (Polygon p in lasers)
             {
@@ -352,6 +377,7 @@ namespace StepDX
                             {
                                 // Score a collision with p
                                 // and we won't need this laser anymore.
+                                score += 100;
                                 hit = true;
                                 sounds.Explosion();
                             }
