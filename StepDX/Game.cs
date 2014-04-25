@@ -480,7 +480,9 @@ namespace StepDX
             enemy.Color = Color.Transparent;
             enemy.Transparent = true;
             enemy.P = p;
-            //enemy.V = new Vector2(-1.5f, 0);
+            //This sets the original velocity. 
+            //TODO: Figure out how to change Y velocity depending on enemy
+            enemy.V = new Vector2(-1.5f, 0);
             enemies.Add(enemy);
         }
     }
